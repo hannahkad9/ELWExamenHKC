@@ -1,12 +1,10 @@
-/* Container for the Pokémon list */
 #pokemonListContainer {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Responsive grid */
-    gap: 16px; /* Space between items */
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); 
+    gap: 18px; 
     padding: 20px;
 }
 
-/* Each Pokémon item */
 .pokemon-item {
     border: 1px solid #ccc;
     border-radius: 8px;
@@ -16,31 +14,34 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Pokémon name and button styles */
 .pokemon-name {
     font-weight: bold;
     font-size: 1.1em;
-    color: #007bff;
+    color: green;
     cursor: pointer;
     text-decoration: none;
 }
 
-/* Show details with some margin when expanded */
 .pokemon-details {
     margin-top: 10px;
     font-size: 0.9em;
+    color: blue;
 }
 
 
 body {
     font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+    background-color: yellow;
     margin: 0;
     padding: 20px;
 }
 
-h1, h2 {
+h1{
     text-align: center;
+    color:red
+}
+h2{
+    color:cadetblue
 }
 
 input[type="text"] {
@@ -54,38 +55,42 @@ input[type="text"] {
 
 
 
-.teamList {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 15px;
-    padding: 0;
-    list-style-type: none;
-}
 
-.teamList h3 {
-    margin: 10px 0 5px;
-}
+
 
 .teamList img {
     width: 100%;
     height: auto;
+    max-width: 300px;      /* Limit maximum width */
+
     border-radius: 8px;
 }
 
 .pokemon-item img {
     width: 100%;
     height: auto; 
+    max-width: 300px;      /* Limit maximum width */
+
     border-radius: 12px; 
 }
 
 #imageteam{
     width: 100%;
     height: auto; 
+    max-width: 300px;      /* Limit maximum width */
+
     border-radius: 12px; 
 }
 
 #imagesearch{
     width: 100%;
     height: auto; 
+    max-width: 300px;      
+
     border-radius: 12px; 
+}
+
+button{
+    background-color: orange;
+    border-color: black;
 }

@@ -52,7 +52,8 @@ async function viewPokemonDetails(name, id) {
             <p>ID: ${data.id}</p>
             <img src="${data.sprites.other['official-artwork'].front_default}" alt="${data.name}">
             <p>Types: ${data.types.map(type => type.type.name).join(', ')}</p>
-            <button onclick="viewAbility(${data.id})">Show Ability</button>
+            <button onclick="searchMoves('${name}', ${id})">Show Moves</button>
+            <div id="moves-container-${id}" style="display: none;"></div>
 
         `;
         
@@ -63,13 +64,51 @@ async function viewPokemonDetails(name, id) {
     }
 }
 
- 
+async function searchMoves(name, id) {
+    const movesContainer = document.getElementById(`moves-container-${id}`);
 
-async function viewAbility(id) {
+    movesContainer.style.display = movesContainer.style.display === 'none' ? 'block' : 'none';
 
-    const response = await fetch(`https://pokeapi.co/api/v2/ability/${id}`);
-    const data = await response.json();
-    
+    // Only fetch and display moves if container is empty
+    if (!movesContainer.innerHTML) {
+        try {
+            const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
+            const data = await response.json();
+
+            // Generate HTML for each move with a "View Move Details" button
+            const movesHtml = data.moves.slice(0, 5).map((moveInfo) => `
+                <p>
+                    ${(moveInfo.move.name)}
+                    <button onclick="viewMoveDetails('${moveInfo.move.url}', ${id})">View Move Details</button>
+                </p>
+            `).join("");
+
+            // Set the moves HTML within the moves container
+            movesContainer.innerHTML = `<h3>Moves</h3>${movesHtml}<div id="move-details-${id}"></div>`;
+        } catch (error) {
+            console.error("Error fetching Pokémon moves:", error);
+        }
+    }
+}
+
+// Function to fetch and display specific move details
+async function viewMoveDetails(moveUrl, pokemonId) {
+    try {
+        const response = await fetch(moveUrl);
+        const moveData = await response.json();
+
+        // Display the specific move details
+        const moveDetailsContainer = document.getElementById(`move-details-${pokemonId}`);
+        moveDetailsContainer.innerHTML = `
+            <h4>Move: ${(moveData.name)}</h4>
+            <p>Type: ${(moveData.type.name)}</p>
+            <p>Power: ${moveData.power !== null ? moveData.power : "N/A"}</p>
+            <p>Accuracy: ${moveData.accuracy !== null ? moveData.accuracy : "N/A"}</p>
+            <p>PP: ${moveData.pp}</p>
+        `;
+    } catch (error) {
+        console.error("Error fetching move details:", error);
+    }
 }
 
 

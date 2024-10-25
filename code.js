@@ -1,5 +1,6 @@
 const pokemonListContainer = document.getElementById("pokemonList");
 const userTeamContainer = document.getElementById("teamList");
+const searchInput = document.getElementById("searchInput");
 const pokemonDetails = document.getElementById("pokemonDetails");
 
 let userTeam = [];
@@ -67,7 +68,7 @@ function addToTeam(name, id) {
         userTeam.push({ name, id });
         updateTeamDisplay();
     } else {
-        alert("El teu equip ja té 6 Pokémon!");
+        alert("Your team has 6 Pokémon!");
     }
 }
 
@@ -76,12 +77,33 @@ function updateTeamDisplay() {
     userTeamContainer.innerHTML = '';
     userTeam.forEach(pokemon => {
         const teamItem = document.createElement("div");
-        teamItem.innerText = `${pokemon.name} (#${pokemon.id})`;
+        teamItem.innerHTML= `${pokemon.name} (#${pokemon.id}) ${pokemon.sprites.other['official-artwork'].front_default}`;
         userTeamContainer.appendChild(teamItem);
     });
 }
 
-
+// Cerca un Pokémon per nom
+searchInput.addEventListener("keyup", async (e) => {
+    if (e.key === "Enter") {
+        const searchQuery = searchInput.value.toLowerCase();
+        try {
+            const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${searchQuery}`);
+            if (response.ok) {
+                const data = await response.json();
+                pokemonDetails.innerHTML = `
+            <h2>${data.name}</h2>
+            <p>ID: ${data.id}</p>
+            <img src="${data.sprites.other['official-artwork'].front_default}" alt="${data.name}">
+            <p>Types: ${data.types.map(type => type.type.name).join(', ')}</p>
+        `;
+            } else {
+                alert("Pokémon not found");
+            }
+        } catch (error) {
+            alert("Error while searching");
+        }
+    }
+});
 
 // Inicialitza la pàgina carregant la llista de Pokémon
 loadPokemonList();

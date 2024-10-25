@@ -108,7 +108,7 @@ function updateTeamDisplay() {
         teamItem.innerHTML = `
             <h3>${pokemon.name}</h3>
             <p>ID: #${pokemon.id}</p>
-            <img src="${pokemon.sprites.other['official-artwork'].front_default}" alt="${pokemon.name}">
+            <img id="imageteam" src="${pokemon.sprites.other['official-artwork'].front_default}" alt="${pokemon.name}">
             <p>Types: ${pokemon.types.map(type => type.type.name).join(', ')}</p>
         `;
 
@@ -129,7 +129,7 @@ searchInput.addEventListener("keyup", async (e) => {
                 pokemonDetails.innerHTML = `
             <h2>${data.name}</h2>
             <p>ID: ${data.id}</p>
-            <img src="${data.sprites.other['official-artwork'].front_default}" alt="${data.name}">
+            <img id="imagesearch" src="${data.sprites.other['official-artwork'].front_default}" alt="${data.name}">
             <p>Types: ${data.types.map(type => type.type.name).join(', ')}</p>
         `;
             } else {

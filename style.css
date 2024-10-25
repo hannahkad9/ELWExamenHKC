@@ -55,7 +55,9 @@ input[type="text"] {
 
 
 
-
+h3, h4{
+    color:black
+}
 
 
 .teamList img {

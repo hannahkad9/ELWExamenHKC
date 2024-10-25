@@ -52,6 +52,8 @@ async function viewPokemonDetails(name, id) {
             <p>ID: ${data.id}</p>
             <img src="${data.sprites.other['official-artwork'].front_default}" alt="${data.name}">
             <p>Types: ${data.types.map(type => type.type.name).join(', ')}</p>
+            <button onclick="viewAbility(${data.id})">Show Ability</button>
+
         `;
         
         // Show the details container
@@ -59,6 +61,15 @@ async function viewPokemonDetails(name, id) {
     } catch (error) {
         console.error("Error fetching Pokémon details:", error);
     }
+}
+
+ 
+
+async function viewAbility(id) {
+
+    const response = await fetch(`https://pokeapi.co/api/v2/ability/${id}`);
+    const data = await response.json();
+    
 }
 
 

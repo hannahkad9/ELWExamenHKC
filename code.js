@@ -63,13 +63,20 @@ async function viewPokemonDetails(name, id) {
 
 
 // Afegeix un Pokémon a l'equip si no hi ha més de 6
-async function addToTeam(name) {
 
-   if (userTeam.includes(name)) {
-        alert('This Pokémon is already in your team!');
-    } else {
-        alert('Your team is full! (Max 6 Pokémon)');
+async function addToTeam(name) {
+    // Check if the team is already full
+    if (userTeam.length >= 6) {
+        alert("Your team has 6 Pokémon!");
+        return;
     }
+
+    const existingPokemon = userTeam.find(pokemon => pokemon.name.toLowerCase() === name.toLowerCase());
+    if (existingPokemon) {
+        alert(`${existingPokemon.name} is already in your team!`);
+        return;
+    }
+
     try {
         // Fetch the Pokémon data from the API
         const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
@@ -101,7 +108,7 @@ function updateTeamDisplay() {
         teamItem.innerHTML = `
             <h3>${pokemon.name}</h3>
             <p>ID: #${pokemon.id}</p>
-            <img src="${data.sprites.other['official-artwork'].front_default}" alt="${data.name}">
+            <img src="${pokemon.sprites.other['official-artwork'].front_default}" alt="${pokemon.name}">
             <p>Types: ${pokemon.types.map(type => type.type.name).join(', ')}</p>
         `;
 

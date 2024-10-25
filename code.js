@@ -63,24 +63,53 @@ async function viewPokemonDetails(name, id) {
 
 
 // Afegeix un Pokémon a l'equip si no hi ha més de 6
-function addToTeam(name, id) {
-    if (userTeam.length < 6) {
-        userTeam.push({ name, id });
-        updateTeamDisplay();
+async function addToTeam(name) {
+
+   if (userTeam.includes(name)) {
+        alert('This Pokémon is already in your team!');
     } else {
-        alert("Your team has 6 Pokémon!");
+        alert('Your team is full! (Max 6 Pokémon)');
+    }
+    try {
+        // Fetch the Pokémon data from the API
+        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
+        const pokemonData = await response.json(); // Fetch and parse the JSON
+
+        // Add the full Pokémon data to the team
+        userTeam.push({
+            name: pokemonData.name,
+            id: pokemonData.id,
+            sprites: pokemonData.sprites,
+            types: pokemonData.types
+        });
+
+        // Update the team display after adding the Pokémon
+        updateTeamDisplay();
+    } catch (error) {
+        console.error("Error fetching Pokémon details:", error);
     }
 }
 
-// Mostra l'equip de l'usuari
+// Function to display the user's team
 function updateTeamDisplay() {
-    userTeamContainer.innerHTML = '';
+    userTeamContainer.innerHTML = ''; 
+
     userTeam.forEach(pokemon => {
         const teamItem = document.createElement("div");
-        teamItem.innerHTML= `${pokemon.name} (#${pokemon.id}) ${pokemon.sprites.other['official-artwork'].front_default}`;
-        userTeamContainer.appendChild(teamItem);
+
+
+        teamItem.innerHTML = `
+            <h3>${pokemon.name}</h3>
+            <p>ID: #${pokemon.id}</p>
+            <img src="${data.sprites.other['official-artwork'].front_default}" alt="${data.name}">
+            <p>Types: ${pokemon.types.map(type => type.type.name).join(', ')}</p>
+        `;
+
+        userTeamContainer.appendChild(teamItem); 
     });
 }
+
+
 
 // Cerca un Pokémon per nom
 searchInput.addEventListener("keyup", async (e) => {
